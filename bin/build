@@ -10,20 +10,39 @@ layersdir=$1
 runtime=$(head -n 1 runtime.txt)
 deno_version=${runtime//deno-/}
 echo "---> Downloading and extracting Deno: ${deno_version}"
-deno_url=https://deno.land/x/install/install.sh
+deno_url="https://deno.land/x/install/install.sh?v=${deno_version}"
 deno_layer_dir="$layersdir"/deno
-mkdir -p "$deno_layer_dir"
 export DENO_INSTALL="$deno_layer_dir"
 
-# install Deno
-echo "---> Installing Deno: ${deno_version}"
-curl -fsSL "$deno_url" | sh -s "$deno_version"
+# Install deno with cache check
+if [[ -f ${deno_layer_dir}.toml ]]; then
+  cached_deno_url=$(cat "${deno_layer_dir}.toml" | yj -t | jq -r .metadata.url 2>/dev/null || echo 'Deno TOML parsing failed')
+fi
+
+if [[ ${deno_url} != "${cached_deno_url}" ]]; then
+  rm -rf "$deno_layer_dir"
+  mkdir -p "$deno_layer_dir"
+  cat >"${deno_layer_dir}.toml" <<EOF
+launch = true
+build = true
+cache = true
+[metadata]
+version = "${deno_version}"
+url = "${deno_url}"
+EOF
+
+  # install Deno
+  echo "---> Installing Deno: ${deno_version}"
+  curl -fsSL "$deno_url" | sh -s "$deno_version"
+
+fi
 
 # setup DENO_DIR for cache
 deno_dir_layer="$layersdir"/deno_dir
 mkdir -p "$deno_dir_layer"
 export DENO_DIR="$deno_dir_layer"
 
+# setup env
 mkdir -p "${deno_layer_dir}"/profile.d
 cat >"${deno_layer_dir}/profile.d/deno.sh" <<EOF
 export DENO_DIR=${deno_dir_layer}
@@ -35,7 +54,9 @@ export PATH="$deno_layer_dir"/bin:$PATH
 # download dependencies
 if [ -f Procfile ]; then
   cat Procfile | grep -E '^(release):' | while read -r line || [[ -n $line ]]; do
-    eval "${line//release:/}"
+    command=${line//release:/}
+    echo "---> Executing: ${command}"
+    eval "${command}"
   done
 fi
 
