@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> Deno Detect (runtime.txt)"
+
+runtime=$(head -n 1 runtime.txt)
+
+if [[ $runtime == deno-* ]]; then
+  exit 0
+fi
+
+exit 100
