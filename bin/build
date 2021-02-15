@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> Deno Buildpack"
+
+# 1. GET ARGS
+layersdir=$1
+
+# 2. DOWNLOAD Deno
+runtime=$(head -n 1 runtime.txt)
+deno_version=${runtime//deno-/}
+echo "---> Downloading and extracting Deno: ${deno_version}"
+deno_url=https://deno.land/x/install/install.sh
+deno_layer_dir="$layersdir"/deno
+mkdir -p "$deno_layer_dir"
+export DENO_INSTALL="$deno_layer_dir"
+
+# install Deno
+echo "---> Installing Deno: ${deno_version}"
+curl -fsSL "$deno_url" | sh -s "$deno_version"
+
+# setup DENO_DIR for cache
+deno_dir_layer="$layersdir"/deno_dir
+mkdir -p "$deno_dir_layer"
+export DENO_DIR="$deno_dir_layer"
+
+mkdir -p "${deno_layer_dir}"/profile.d
+cat >"${deno_layer_dir}/profile.d/deno.sh" <<EOF
+export DENO_DIR=${deno_dir_layer}
+EOF
+
+# MAKE DENO AVAILABLE TO THIS SCRIPT
+export PATH="$deno_layer_dir"/bin:$PATH
+
+# download dependencies
+if [ -f Procfile ]; then
+  cat Procfile | grep -E '^(release):' | while read -r line || [[ -n $line ]]; do
+    eval "${line//release:/}"
+  done
+fi
+
+#echo 'processes = [{ type = "web", command = "deno run -A app.ts"}]' >"$layersdir/launch.toml"
