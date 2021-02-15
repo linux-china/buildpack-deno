@@ -1,0 +1,19 @@
+# Buildpack API version
+api = "0.2"
+
+# Buildpack ID and metadata
+[buildpack]
+id = "samples/buildpack-deno"
+version = "0.1.0"
+name = "Deno Buildpack"
+homepage = "https://github.com/linux-china/buildpack-deno"
+
+# Stacks that the buildpack will work with
+[[stacks]]
+id = "io.buildpacks.stacks.bionic"
+
+[[stacks]]
+id = "heroku-18"
+
+[[stacks]]
+id = "heroku-20"
