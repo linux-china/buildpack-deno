@@ -1,2 +1,2 @@
-release: deno cache app.ts 
+release: deno cache app.ts
 web: deno run --allow-net --cached-only app.ts
