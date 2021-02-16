@@ -6,3 +6,6 @@ build:
 
 server:
    docker run --interactive --tty --rm -p 8080:8080 buildpacks-deno
+
+worker:
+  docker run --rm --entrypoint worker buildpacks-deno
