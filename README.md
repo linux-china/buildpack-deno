@@ -28,3 +28,4 @@ pack build buildpacks-deno --builder paketobuildpacks/builder:full --buildpack h
 
 * Create a buildpack tutorial: https://buildpacks.io/docs/buildpack-author-guide/create-buildpack/
 * Buildpack samples: https://github.com/buildpacks/samples/tree/main/buildpacks
+* pure bash bible: https://github.com/dylanaraps/pure-bash-bible
