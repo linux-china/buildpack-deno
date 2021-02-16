@@ -49,8 +49,16 @@ fi
 
 # setup DENO_DIR for cache
 deno_dir_layer="$layersdir"/deno_dir
-mkdir -p "$deno_dir_layer"
 export DENO_DIR="$deno_dir_layer"
+
+if ! [[ -f ${deno_dir_layer}.toml ]]; then
+  mkdir -p "$deno_dir_layer"
+  echo "---> Creating Deno Cache: ${deno_version}"
+  cat >"${deno_dir_layer}.toml" <<EOF
+cache = true
+EOF
+
+fi
 
 # setup env
 mkdir -p "${deno_layer_dir}"/profile.d
