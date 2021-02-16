@@ -5,8 +5,6 @@ echo "---> Deno Detect (runtime.txt)"
 
 runtime=$(head -n 1 runtime.txt)
 
-if [[ $runtime == deno-* ]]; then
-  exit 0
+if ! [[ $runtime == deno-* ]]; then
+  exit 100
 fi
-
-exit 100
