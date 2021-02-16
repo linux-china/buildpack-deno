@@ -1,27 +1,35 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+get_deno_version() {
+  runtime=$(head -n 1 runtime.txt)
+  deno_version=${runtime//deno-/}
+  if ! [[ $deno_version == v* ]]; then
+    deno_version="v${deno_version}"
+  fi
+  echo "$deno_version"
+}
 echo "---> Deno Buildpack"
 
-# 1. GET ARGS
+# GET ARGS
 layersdir=$1
 
-# 2. DOWNLOAD Deno
-runtime=$(head -n 1 runtime.txt)
-deno_version=${runtime//deno-/}
-echo "---> Downloading and extracting Deno: ${deno_version}"
+# get Deno version, url and install dir
+deno_version=$(get_deno_version)
 deno_url="https://deno.land/x/install/install.sh?v=${deno_version}"
 deno_layer_dir="$layersdir"/deno
 export DENO_INSTALL="$deno_layer_dir"
 
-# Install deno with cache check
+# Deno cache check
 if [[ -f ${deno_layer_dir}.toml ]]; then
   if grep -q "$deno_version" "${deno_layer_dir}.toml"; then
     cached_deno_url="${deno_url}"
   fi
 fi
 
+# Install Deno
 if [[ ${deno_url} != "${cached_deno_url}" ]]; then
+  echo "---> Downloading and extracting Deno: ${deno_version}"
   rm -rf "$deno_layer_dir"
   mkdir -p "$deno_layer_dir"
   cat >"${deno_layer_dir}.toml" <<EOF
