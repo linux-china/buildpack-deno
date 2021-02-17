@@ -9,3 +9,6 @@ server:
 
 worker:
   docker run --rm --entrypoint worker buildpacks-deno
+
+shell:
+  docker run -t -i --rm --entrypoint /bin/bash buildpacks-deno
