@@ -55,6 +55,8 @@ if ! [[ -f ${deno_dir_layer}.toml ]]; then
   mkdir -p "$deno_dir_layer"
   echo "---> Creating Deno Cache: ${deno_version}"
   cat >"${deno_dir_layer}.toml" <<EOF
+launch = true
+build = true
 cache = true
 EOF
 
