@@ -7,8 +7,8 @@ build:
 server:
    docker run --interactive --tty --rm -p 8080:8080 buildpacks-deno
 
-worker:
-  docker run --rm --entrypoint worker buildpacks-deno
+info:
+  docker run --rm --entrypoint info buildpacks-deno
 
 shell:
   docker run -t -i --rm --entrypoint /bin/bash buildpacks-deno
