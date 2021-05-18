@@ -8,14 +8,14 @@ Compatible apps:
 * Create runtime.txt with Deno version
 
 ```
-deno-1.7.4
+deno-1.10.2
 ```
 
 * Create Procfile
 
 ```
-release: deno cache app.ts
-web: deno run --allow-net --cached-only app.ts
+release: deno bundle app.ts > bundle.js
+web: deno run --allow-net bundle.js
 ```
 
 * Build
