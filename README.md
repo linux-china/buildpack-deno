@@ -46,3 +46,4 @@ entrypoint commands
 * Create a buildpack tutorial: https://buildpacks.io/docs/buildpack-author-guide/create-buildpack/
 * Buildpack samples: https://github.com/buildpacks/samples/tree/main/buildpacks
 * pure bash bible: https://github.com/dylanaraps/pure-bash-bible
+* Buildpack for Deno: https://github.com/danbev/deno-buildpack
