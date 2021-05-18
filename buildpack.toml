@@ -4,7 +4,7 @@ api = "0.2"
 # Buildpack ID and metadata
 [buildpack]
 id = "linuxchina/buildpack-deno"
-version = "0.1.0"
+version = "0.2.0"
 name = "Deno Buildpack"
 homepage = "https://github.com/linux-china/buildpack-deno"
 
@@ -13,7 +13,11 @@ homepage = "https://github.com/linux-china/buildpack-deno"
 id = "io.buildpacks.stacks.bionic"
 
 [[stacks]]
-id = "heroku-18"
+id = "io.paketo.stacks.tiny"
 
-[[stacks]]
-id = "heroku-20"
+[metadata]
+include-files = [
+  "LICENSE",
+  "README.md",
+  "buildpack.toml"
+]
