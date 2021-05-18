@@ -1,4 +1,4 @@
-release: deno bundle main.ts > bundle.js
+release: deno bundle app.ts > bundle.js
 web: deno run --allow-net bundle.js
 info: deno run info.ts
 worker: deno run worker.ts
