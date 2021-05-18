@@ -5,6 +5,8 @@ Compatible apps:
 
 ### How to usage?
 
+You can check [sample app](./sample), and step as following:
+
 * Create runtime.txt with Deno version
 
 ```
@@ -21,24 +23,7 @@ web: deno run --allow-net bundle.js
 * Build
 
 ```bash
-pack build buildpacks-deno --builder paketobuildpacks/builder:full --buildpack https://github.com/linux-china/buildpack-deno  --buildpack gcr.io/paketo-buildpacks/procfile
-```
-
-# Buildpacks directories
-
-```
------> layers_dir: /layers/xxxx
------> platform dir: /platform
------> plan.toml: /tmp/samples_buildpack-deno-925340106/samples_buildpack-deno/plan.toml
------> HOME: /home/cnb
------> PWD: /workspace
------> Entrypoint /cnb/process
-```
-
-entrypoint commands
-
-```
-/cnb/process/web -->  /cnb/lifecycle/launcher
+pack build buildpacks-deno --builder paketobuildpacks/builder:full --path ./sample --buildpack docker.io/linuxchina/buildpack-deno:0.2.0 --buildpack gcr.io/paketo-buildpacks/procfile
 ```
 
 # References
