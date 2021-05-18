@@ -1,4 +1,4 @@
-release: deno cache app.ts
-web: deno run --allow-net --cached-only app.ts
+release: deno bundle main.ts > bundle.js
+web: deno run --allow-net bundle.js
 info: deno run info.ts
 worker: deno run worker.ts
