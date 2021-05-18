@@ -3,7 +3,7 @@ api = "0.2"
 
 # Buildpack ID and metadata
 [buildpack]
-id = "samples/buildpack-deno"
+id = "linuxchina/buildpack-deno"
 version = "0.1.0"
 name = "Deno Buildpack"
 homepage = "https://github.com/linux-china/buildpack-deno"
